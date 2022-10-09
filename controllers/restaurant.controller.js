@@ -62,3 +62,21 @@ exports.getAllCategories = async (req,res) =>{
         })
     }
 }
+
+exports.getRestaurantByCategory = async (req,res) =>{
+    let restArr = [];
+    let category=req.params.category;
+    try{
+        const restaurants= await Restaurant.find({});
+        restArr = restaurants.filter((restaurant) => {
+            return restaurant.category === category;
+        });
+        res.status(200).send(restArr);
+    }
+    catch(err){
+        console.log('error in getting restaurants',err);
+        res.status(500).send({
+            message: "Some internal error happened while getting restaurants"
+        })
+    }
+}
