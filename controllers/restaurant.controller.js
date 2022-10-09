@@ -1,5 +1,5 @@
 const Restaurant = require("../models/restaurant.model");
-
+var BSON = require('bson');
 exports.createRestaurant= async (req,res)=>{
 
     let restObj={
@@ -77,6 +77,25 @@ exports.getRestaurantByCategory = async (req,res) =>{
         console.log('error in getting restaurants',err);
         res.status(500).send({
             message: "Some internal error happened while getting restaurants"
+        })
+    }
+}
+
+exports.getRestaurantsById = async (req,res) => {
+    let id = BSON.ObjectId(req.params.id);
+    
+    try{
+        let restaurant = await Restaurant.find({"_id" : id});
+        if(restaurant)
+        return res.status(200).send(restaurant);
+        else{
+            return res.status(404).send("not found");
+        }
+    }
+    catch(err){
+        console.log('error in getting restaurant',err);
+        res.status(500).send({
+            message: "Some internal error happened while getting restaurant"
         })
     }
 }
