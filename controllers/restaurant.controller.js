@@ -40,3 +40,25 @@ exports.getAllRestaurants = async (req,res)=>{
         })
     }
 }
+
+exports.getAllCategories = async (req,res) =>{
+    let catArr=[];
+    let catSet = new Set();
+    try{
+        const restaurants= await Restaurant.find({});
+        restaurants.forEach((restaurant) => {
+            catSet.add(restaurant.category);
+        });
+        for(let cat of catSet)
+        {
+            catArr.push(cat);
+        }
+        res.status(200).send(catArr);
+    }
+    catch(err){
+        console.log('error in getting categories',err);
+        res.status(500).send({
+            message: "Some internal error happened while getting categories"
+        })
+    }
+}
