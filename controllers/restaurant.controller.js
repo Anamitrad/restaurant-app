@@ -99,3 +99,17 @@ exports.getRestaurantsById = async (req,res) => {
         })
     }
 }
+
+exports.getRestaurantsByRating = async (req,res) => {
+    let rating = req.params.ratingVal;
+    try{
+        let restaurants = await Restaurant.find( { rating : { $gte: rating} } )
+        res.status(200).send(restaurants);
+    }
+    catch(err){
+        console.log('error in getting restaurants',err);
+        res.status(500).send({
+            message: "Some internal error happened while getting restaurants"
+        })
+    }
+}
